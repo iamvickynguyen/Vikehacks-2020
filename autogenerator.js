@@ -1,5 +1,6 @@
 var NAMES = readTextFile('names.txt');
 var CONJUNCTIONS = readTextFile('conjunctions.txt');
+var VERBS = readTextFile('verbs.txt');
 var TOBE = new Set(['is', 'are', 'am', 'was', 'were']);
 var PRONOUNS = new Set(['it', 'she', 'he', 'they', 'i', 'we', 'you']);
 
