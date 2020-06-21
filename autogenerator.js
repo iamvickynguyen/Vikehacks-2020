@@ -32,7 +32,6 @@ function parseText(rawText) {
     var cleanSentences = cleanText(rawText);
     var questionsAndAnswers = analyze(cleanSentences);
     createTable(questionsAndAnswers);
-    console.log(questionsAndAnswers);
 }
 
 function cleanText(rawText) {
@@ -56,8 +55,8 @@ function analyze(sentences) {
         if (isValidSentence(chars)) {
             for (var i = 0; i < chars.length; i++) { //'to be' can't stand at the end
                 if (VERBS.has(chars[i]) || !chars[i].endsWith("ing") && (chars.length > 2 && VERBS.has(chars[i].substring(0, chars[i].length - 2)))) {
-                    if (NAMES.has(chars[0])) {
-                        questionsAndAnswers.push([generateWhoQuestion(chars, i), ANSWERS[n]]);
+                    if (NAMES.has(chars[0]) && isValidWhoQuesion(ANSWERS[n], chars[i])) {
+                        questionsAndAnswers.push([generateWhoQuestion(chars[i], ANSWERS[n]), ANSWERS[n]]);     
                     }    
                 } else if (TOBE.has(chars[i])) {
                     if (chars[i+1].endsWith("ing")) {
@@ -106,10 +105,27 @@ function generateWhatQuestion(chars, tobeIndex) {
 }
 
 // Who question
-function generateWhoQuestion(chars, tobeIndex) {
-    var end = chars.slice(tobeIndex, chars.length).join(" "); // remove full stop at the end
+function generateWhoQuestion(verb, answer) {
+    q = [];
+    var verbIndex = answer.indexOf(verb);
+    var end = answer.slice(verbIndex, chars.length).join(" "); // remove full stop at the end
     var q = "Who " + end + "?";
     return q;
+}
+
+// if the verb appears more than 1, invalid
+function isValidWhoQuesion(answer, verb) {
+    var ans = answer.split(' ');
+    count = 0;
+    for (var a of ans) {
+        if (a == verb) {
+            count += 1;
+        }
+        if (count > 1) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // NOTE: use this to write to a file
