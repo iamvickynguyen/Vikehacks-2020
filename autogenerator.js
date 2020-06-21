@@ -2,7 +2,7 @@ var NAMES = readTextFile('names.txt');
 var CONJUNCTIONS = readTextFile('conjunctions.txt');
 var VERBS = readTextFile('verbs.txt');
 var TOBE = new Set(['is', 'are', 'am', 'was', 'were']);
-var PRONOUNS = new Set(['it', 'she', 'he', 'they', 'i', 'we', 'you']);
+var PRONOUNS = new Set(['it', 'she', 'he', 'they', 'i', 'we', 'you', 'this', 'these', 'those', 'that', 'the']);
 
 var ANSWERS = [];
 
@@ -55,7 +55,11 @@ function analyze(sentences) {
         var chars = sentence.split(" ");
         if (isValidSentence(chars)) {
             for (var i = 0; i < chars.length; i++) { //'to be' can't stand at the end
-                if (TOBE.has(chars[i])) {
+                if (VERBS.has(chars[i]) || !chars[i].endsWith("ing") && (chars.length > 2 && VERBS.has(chars[i].substring(0, chars[i].length - 2)))) {
+                    if (NAMES.has(chars[0])) {
+                        questionsAndAnswers.push([generateWhoQuestion(chars, i), ANSWERS[n]]);
+                    }    
+                } else if (TOBE.has(chars[i])) {
                     if (chars[i+1].endsWith("ing")) {
                         questionsAndAnswers.push([generateIngQuestion(chars, i), ANSWERS[n]]);
                     } else {
@@ -98,6 +102,13 @@ function generateWhatQuestion(chars, tobeIndex) {
         chars[0] = chars[0].toLowerCase();
     var first = chars.slice(0, tobeIndex).join(" ");
     var q = "What " + chars[tobeIndex] + " " + first + "?";
+    return q;
+}
+
+// Who question
+function generateWhoQuestion(chars, tobeIndex) {
+    var end = chars.slice(tobeIndex, chars.length).join(" "); // remove full stop at the end
+    var q = "Who " + end + "?";
     return q;
 }
 
@@ -152,6 +163,7 @@ function createTable(data) {
 
         var tAnswer = document.createElement('p'); // answer
         tAnswer.textContent = qa[1];
+        tAnswer.style.display = "none";
 
         tButton.addEventListener('click', function() {
             var ele = this.parentElement.childNodes[1];
