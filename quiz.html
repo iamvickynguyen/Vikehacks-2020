@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Quiz</title>
+	<!--Boostrap-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script>
+    window.onload = function() {
+      quizGenerator();
+    }
+
+    function quizGenerator(){
+
+     //get id from query 
+     const queryString = window.location.search;
+     const urlParams = new URLSearchParams(queryString);
+     var id = urlParams.get('id');
+
+    //read json file
+      let jsonArray = '';
+      let getJson = readTextFile("quiz.json", function(text){
+                jsonArray = JSON.parse(text);
+            });
+      const promise = new Promise(function(resolve, reject) { 
+          setTimeout(() => { 
+              resolve(getJson); 
+          }, 100); 
+      });
+      promise.then(function(response) {
+        getQuestionAndAnswer(jsonArray);
+      });
+     
+    function readTextFile(file, callback) {
+      var rawFile = new XMLHttpRequest();
+      rawFile.overrideMimeType("application/json");
+      rawFile.open("GET", file, true);
+      rawFile.onreadystatechange = function() {
+          if (rawFile.readyState === 4 && rawFile.status == "200") {
+              callback(rawFile.responseText);
+          }
+      }
+      rawFile.send(null);
+  }
+
+    //make question based on the id of the quiz from json array
+    function getQuestionAndAnswer(jsonArray){
+      let title = '';
+      let Q1 = "";
+      let Q2 = "";
+      let Q3 = "";
+      let Q4 = "";
+      let Q5 = "";
+      let A1 = "";
+      let A2 = "";
+      let A3 = "";
+      let A4 = "";
+      let A5 = "";
+
+
+      for(let data of jsonArray){
+        if(id == data.ID){
+          title = data.title;
+          Q1 = data.question_1;
+          Q2 = data.question_2;
+          Q3 = data.question_3;
+          Q4 = data.question_4;
+          Q5 = data.question_5;
+          A1 = data.answer_1;
+          A2 = data.answer_2;
+          A3 = data.answer_3;
+          A4 = data.answer_4;
+          A5 = data.answer_5;
+        }//if
+      }//for
+      document.getElementById("title").innerHTML = title;
+      document.getElementById("Q1").innerHTML = "1.)  " + Q1;
+      document.getElementById("Q2").innerHTML = "2.)  " + Q2;
+      document.getElementById("Q3").innerHTML = "3.)  " + Q3;
+      document.getElementById("Q4").innerHTML = "4.)  " + Q4;
+      document.getElementById("Q5").innerHTML = "5.)  " + Q5;
+      document.getElementById("submit").value = id;
+    }//getQuestionAndAnswer
+   }//quiz
+  </script>
+</head>
+<body style="height:100vh;">
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">WebSiteName</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Add Quiz !</a></li>
+            <li><a href="#">Quiz Generator</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+</div>
+
+<div style="margin-top: 50px;">
+ <div class="row">
+    <div class="col-sm-12">
+      <h1 id = "title"></h1>
+   </div>
+ </div>
+
+ <div class="row">
+    <div class="col-sm-12">
+      <form action="checkAnswer.php" method="post" enctype="multipart/form-data">
+
+          <div class="form-group">
+            <div id = "Q1">question 1</div>
+          </div>
+
+          <div class="form-group">
+            <label for="answer">1. Answer</label>
+            <input type="text" class="form-control" id="A1" name="A1">
+          </div>
+
+          <div class="form-group">
+            <div id = "Q2">question 2</div>
+          </div>
+
+          <div class="form-group">
+            <label for="answer">2. Answer</label>
+            <input type="text" class="form-control" id="A2" name="A2">
+          </div>
+
+          <div class="form-group">
+            <div id = "Q3">question 3</div>
+          </div>
+
+          <div class="form-group">
+            <label for="answer">3. Answer</label>
+            <input type="text" class="form-control" id="A3" name="A3">
+          </div>
+
+          <div class="form-group">
+            <div id = "Q4">question 5</div>
+          </div>
+
+          <div class="form-group">
+            <label for="answer">4. Answer</label>
+            <input type="text" class="form-control" id="A4" name="A4">
+          </div>
+
+          <div class="form-group">
+            <div id = "Q5">question 5</div>
+          </div>
+
+          <div class="form-group">
+            <label for="answer">5. Answer</label>
+            <input type="text" class="form-control" id="A5" name="A5">
+          </div>
+
+
+
+           <button id="submit" type="submit" value="submit" name="submit">Submit</button>
+      </form>
+   </div>
+ </div>
+</div>
+
+
+
+
+
+</div>
+</body>
+</html>
