@@ -30,6 +30,7 @@ function uploadFile() {
 function parseText(rawText) {
     var cleanSentences = cleanText(rawText);
     var questionsAndAnswers = analyze(cleanSentences);
+    createTable(questionsAndAnswers);
     console.log(questionsAndAnswers);
 }
 
@@ -45,7 +46,7 @@ function cleanText(rawText) {
     return cleanSentences;
 }
 
-// TODO: analyze this
+// TODO: dev this
 function analyze(sentences) {
     var questionsAndAnswers = [];
     for (var n = 0; n < sentences.length; n++) {
@@ -99,6 +100,7 @@ function generateWhatQuestion(chars, tobeIndex) {
     return q;
 }
 
+// NOTE: use this to write to a file
 function writeFile(data) {
     let hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/plain;charset=utf-8,' + encodeURI(data);
@@ -107,3 +109,62 @@ function writeFile(data) {
     hiddenElement.click();
 }
 
+
+/* UPLOAD QUESTIONS AND ANSWER TO TABLE */
+function createTable(data) {
+    const table = document.querySelector('#mytable');
+    var i = 0;
+    for (var qa of data) {
+        let tRow = document.createElement('tr');
+        // No.
+        var tCol1 = document.createElement('td');
+        tCol1.textContent = i.toString();
+        tRow.appendChild(tCol1);
+        i += 1;
+
+        // Question
+        var tCol2 = document.createElement('td');
+        tCol2.textContent = qa[0];
+        tRow.appendChild(tCol2);
+
+        // Your Answer
+        var tCol3 = document.createElement('td');
+        var tInput = document.createElement('textarea');
+        tCol3.appendChild(tInput);
+        tRow.appendChild(tCol3);
+
+        // Show Answer
+        var tCol4 = document.createElement('td');
+        var tButton = document.createElement('button');
+        var name = "btn btn-success";
+        var arr = tButton.className.split(" ");
+        if (arr.indexOf(name) == -1) {
+            tButton.className += " " + name;
+        }
+        var tI = document.createElement('i');
+        var Iclass = "far fa-bookmark d-xl-flex justify-content-xl-center align-items-xl-center";
+        var Iarr = tI.className.split(" ");
+        if (Iarr.indexOf(Iclass) == -1) {
+            tI.className += " " + Iclass;
+        }
+        tButton.appendChild(tI);
+
+        var tAnswer = document.createElement('p'); // answer
+        tAnswer.textContent = qa[1];
+
+        tButton.addEventListener('click', function() {
+            var ele = this.parentElement.childNodes[1];
+            if (ele.style.display == "none") {
+                ele.style.display = "block";
+            } else {
+                ele.style.display = "none";
+            }
+        }, false);
+
+        tCol4.appendChild(tButton);
+        tCol4.appendChild(tAnswer);
+        tRow.appendChild(tCol4);
+
+        table.appendChild(tRow);
+    }
+}
