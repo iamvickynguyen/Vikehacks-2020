@@ -34,7 +34,7 @@ file_put_contents('numQuiz.txt', $ID);
             'ID' => $ID,
         );
 
-// read json file into array of strings
+		// read json file into array of strings
         $file      = "quiz.json";
         $filearray = file($file);
         
@@ -56,5 +56,5 @@ file_put_contents('numQuiz.txt', $ID);
         // write the json to the file
         file_put_contents($file, $jsoncode);
 
-
+        echo "Your form have been submitted.";
 ?>
