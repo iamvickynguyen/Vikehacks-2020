@@ -11,13 +11,28 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="style.css">
   </head>
 
-<body style="height:1500px">
+<body style="height:500px">
 
-<form action="form.php" method="post" enctype="multipart/form-data">
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="homepage.html">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="addQuizForm.html">Add Quiz !</a></li>
+      <li><a href="#">Quiz Generator</a></li>
+    </ul>
+  </div>
+</nav>
 
-  <div class="form-group">
+ <div class="row">
+    <div class="col-sm-12">
+<form action="form.php" method="post" enctype="multipart/form-data" style = "padding:10px">
+
+  <div class="form-group" id = "addQuizForm" >
     <label for="Title">Quiz Title</label>
     <input type="text" class="form-control" id="title" name="QTitle">
   </div>
@@ -73,8 +88,9 @@
   </div>
 
 
-
-   <button id="submit" type="submit"value="submit" name="submit">Submit</button> 
+   <button id="submit" type="submit"value="submit" name="submit" style="margin-bottom: 50px;">Submit</button> 
 </form>
+</div>
+</div>
 </body>
 </html>
