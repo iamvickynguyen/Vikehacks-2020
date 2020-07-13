@@ -6,8 +6,8 @@
 
 ## What it does
 <ul>
-<li>auto generate quizzess</li>
-<li>manually add quizes</li>
+<li>auto generate quizzes</li>
+<li>manually add quizzes</li>
 </ul>
 
 ## How I built it
@@ -24,7 +24,7 @@
 
 ## Accomplishments that I'm proud of
 <ul>
-<li>see it auto generates quizes from a random text</li>
+<li>see it auto generates quizzes from a random text</li>
 </ul>
 
 ## What I learned
